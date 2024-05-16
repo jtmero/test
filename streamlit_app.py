@@ -23,7 +23,8 @@ if "messages" not in st.session_state:
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
-    st.write(message["role"])
+    with st.chat_message("user"):
+        st.write(message["role"])
         
 # Accept user input
 if prompt := st.chat_input("What is up?"):
