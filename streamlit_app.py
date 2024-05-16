@@ -1,31 +1,26 @@
 import streamlit as st
-import time
 
-# A function to simulate dynamic content update
-def update_chat():
-    if 'messages' not in st.session_state:
-        st.session_state.messages = []
-        
+# Initialize the session state if not already done
+if 'messages' not in st.session_state:
+    st.session_state.messages = []
+
+def add_message(user_message):
+    st.session_state.messages.append({"user": user_message, "assistant": f"Response to '{user_message}'"})
+
+st.title("Interactive Chat with Dynamic Updates")
+
+# Chat input for user messages
+user_input = st.chat_input("Type your message here...")
+
+# If user has entered a message, process it
+if user_input:
+    add_message(user_input)
+
+# Display chat messages
+for msg in st.session_state.messages:
     with st.chat_message("user"):
-        st.write(f"User message {len(st.session_state.messages) + 1}")
-        
+        st.write(msg["user"])
     with st.chat_message("assistant"):
-        st.write(f"Assistant response {len(st.session_state.messages) + 1}")
+        st.write(msg["assistant"])
 
-    # Append the new message to the session state
-    st.session_state.messages.append(f"Message {len(st.session_state.messages) + 1}")
-
-# Main Streamlit app code
-st.title("Chat with Dynamic Content")
-
-if st.button("Add Message"):
-    update_chat()
-
-# Display existing messages
-for msg in st.session_state.get('messages', []):
-    with st.chat_message("user"):
-        st.write(msg)
-        
-    with st.chat_message("assistant"):
-        st.write(f"Response to {msg}")
 
